@@ -3,34 +3,6 @@ import uuid
 from datetime import timezone
 # Create your models here.
 
-#   {
-#     "id": "0d001705-fa00-4317-9bb0-f34118da491c",
-#     "business_name": "Ovaloop Venture",
-#     "name": "Fanta",
-#     "sku": "53418457",
-#     "cost_price": "4000.00",
-#     "selling_price": "6000.00",
-#     "stock_unit": "5",
-#     "unit_measurement": "Piece",
-#     "unit_increment": "1.00",
-#     "created_at": "2024-03-07T22:49:04.159536+01:00",
-#     "updated_at": "",
-#     "meta_measurement": [
-#       {
-#         "name": "Box",
-#         "base_quantity": "12",
-#         "selling_price": "29500",
-#         "full_name": "Box (12 qty)"
-#       },
-#       {
-#         "name": "Carton",
-#         "base_quantity": "12",
-#         "selling_price": "50500",
-#         "full_name": "Carton (12 qty)"
-#       }
-#     ]
-#   },
-
 class MetaMeasurement(models.Model):
     name = models.CharField(max_length=100)
     base_quantity = models.CharField(max_length=100)

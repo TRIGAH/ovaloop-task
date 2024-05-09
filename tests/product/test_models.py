@@ -11,6 +11,8 @@ class TestModels(TestCase):
             quantity = "4"
         )
 
-    def  test_create_order_Slug_ON_SAVE(self):
-        self.assertEquals(self.product1.selling_price,"50000")    
+    def  test_create_order_has_selling_price(self):
+        self.assertEqual(self.product1.selling_price,"50000")    
+        self.assertEqual(self.product1.quantity,"4")    
+        self.assertEqual(self.product1.name,None)    
 
