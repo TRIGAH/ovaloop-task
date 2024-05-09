@@ -1,6 +1,7 @@
+from django.db import IntegrityError
 from django.test import TestCase
 from product.models import Product,MetaMeasurement
-
+from django.db import transaction
 
 class TestModels(TestCase):
 
@@ -10,10 +11,17 @@ class TestModels(TestCase):
             selling_price = "50000",
             quantity = "4"
         )
-
+  
     def  test_create_order_has_selling_price(self):
         self.assertEqual(self.product1.selling_price,"50000")    
         self.assertEqual(self.product1.quantity,"4")    
-        self.assertEqual(self.product1.name,None)    
+        self.assertEqual(self.product1.name,None)  
 
+        with transaction.atomic():
+            with self.assertRaises(IntegrityError):
+                    Product.objects.create(
+                        id = '0d001705-fa00-4317-9bb0-f34118da491c',
+                        selling_price = "50000",
+                        quantity = "7"
+                    )
 
