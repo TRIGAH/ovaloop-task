@@ -87,7 +87,20 @@ python manage.py runserver 5000
 where 5000 is your port number
 
 '''
+## TESTTING
 
+We used Pytest for Testing
+
+'''
+if encounter this error while running test :- ERROR product/tests/test_views.py - django.core.exceptions.ImproperlyConfigured: Requested setting INSTALLED_APPS, but settings are not configured. You must either define the environment...
+
+--- FiX for Windows....(Sorry Mac)
+
+set DJANGO_SETTINGS_MODULE= ovaloop.settings
+
+but it should work on Mac with export command
+
+'''
 
 # THANK YOU
 
