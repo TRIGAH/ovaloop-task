@@ -7,8 +7,3 @@ import json
 class TestViews(TestCase):
     pass
      
-    # def setUp(self):
-    #     self.client = Client() 
-    #     self.list_url = reverse('list')
-    #     self.starfeeds = Product.objects.create(name="starfeeds",budget=200000)
-    #     self.detail_url = reverse('detail',args=['starfeeds'])
