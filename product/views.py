@@ -9,12 +9,13 @@ from rest_framework import status
 
 # Create your views here.
 
-
+# Approach 1 using Class Based Views
 class CreateOrderViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = CreateOrderSerializer
 
 
+# Approach 2 using Function Based Views
 
 @api_view(['POST'])
 def create_order(request):
