@@ -52,7 +52,9 @@ source virtual_environment_name/bin/activate
 
 '''
 
-pip install django djangorestframework
+pip freeze > requirements.txt - to create requirements file
+
+pip install -r requirements.txt
 
 '''
 
