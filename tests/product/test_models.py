@@ -16,3 +16,4 @@ class TestModels(TestCase):
         self.assertEqual(self.product1.quantity,"4")    
         self.assertEqual(self.product1.name,None)    
 
+
