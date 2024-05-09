@@ -10,8 +10,6 @@ from rest_framework import status
 # Create your views here.
 
 
-
-
 class CreateOrderViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = CreateOrderSerializer
@@ -27,6 +25,8 @@ def create_order(request):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 products_list = [
@@ -167,22 +167,6 @@ products_list = [
   }
 ]
 
-
-
-# @api_view(['GET', 'POST'])
-# def create_order(request):
-#     if request.method == 'POST':
-#         # id = request.data.get('id')
-#         # selling_price = request.data.get('selling_price')
-#         # quantity = request.data.get('quantity')
-#         orderitems = [Orders(**item) for item in products_list ]
-#         orders=Orders.objects.bulk_create(orderitems)
-#         serializer = CreateOrderSerializer(data=orders, many=True)
-#         if serializer.is_valid():
-#             serializer.save()
-#         return Response({"message": "Order Created Successfully", "data":serializer.data})
-        
-#     return Response({"message": request.data})
 
 
 
