@@ -28,10 +28,13 @@ class CreateOrderSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         if 'meta_measurement' in validated_data:
             meta_measurement_data = validated_data.pop('meta_measurement')
-            product = Product.objects.create(**validated_data)
-            for mm_data in meta_measurement_data:
-                meta_measurement, _ = MetaMeasurement.objects.get_or_create(**mm_data)
-                product.meta_measurement.add(meta_measurement)
+            try:
+                product = Product.objects.create(**validated_data)
+                for mm_data in meta_measurement_data:
+                    meta_measurement, _ = MetaMeasurement.objects.get_or_create(**mm_data)
+                    product.meta_measurement.add(meta_measurement)
+            except Exception as e:  
+                raise serializers.ValidationError('coul not create product',e)      
         else:
             product = Product.objects.create(**validated_data)
         return product
