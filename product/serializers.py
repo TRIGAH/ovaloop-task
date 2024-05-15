@@ -7,12 +7,21 @@ class MetaMeasurementSerializer(serializers.ModelSerializer):
         model= MetaMeasurement
         fields = '__all__'
 
-class CreateOrderSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     id = serializers.CharField(required=True)
     quantity = serializers.CharField(required=True)
     selling_price = serializers.CharField(required=True)
+    meta_measurement = MetaMeasurementSerializer(required=False)
+    class Meta:
+        model = Product
+        fields = ['id','quantity','selling_price','meta_measurement']
+
+
+
+
+class CreateOrderSerializer(serializers.ModelSerializer):
+    products = ProductSerializer(many=True,required=True)
     total_quantity = serializers.SerializerMethodField()
-    meta_measurement = MetaMeasurementSerializer(many=True,required=False)
 
     class Meta:
         model = Product
@@ -26,28 +35,32 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         return total_quantity
     
     def create(self, validated_data):
-        if 'meta_measurement' in validated_data:
-            meta_measurement_data = validated_data.pop('meta_measurement')
+        print("THIS IS VALID_DATA "*5,validated_data)
+        product_data = validated_data['products'][0]
+        meta_measurement_data = product_data.pop('meta_measurement')
+        if 'meta_measurement' in product_data:
             try:
-                product = Product.objects.create(**validated_data)
-                for mm_data in meta_measurement_data:
-                    meta_measurement, _ = MetaMeasurement.objects.get_or_create(**mm_data)
-                    product.meta_measurement.add(meta_measurement)
+                print('PRODUCT DATA '*5 , product_data)
+                print('META DATA '*5 , meta_measurement_data)
+                product = Product.objects.create(**product_data)
+                meta_measurement = MetaMeasurement.objects.create(**meta_measurement_data)
+                product.meta_measurement.add(meta_measurement)
             except Exception as e:  
                 raise serializers.ValidationError('coul not create product',e)      
         else:
-            product = Product.objects.create(**validated_data)
+            product = Product.objects.create(**product_data)
         return product
 
         
-    def validate(self,data):
-        if 'meta_measurement' in data:
-            meta_measurement = data['meta_measurement']
-            data['selling_price'] = meta_measurement[0].get('selling_price')
-        if 'id' not in data:
-            raise serializers.ValidationError('id field is required')    
-        if 'selling_price' not in data:
-            raise serializers.ValidationError('selling_price field is required')
-        if 'quantity' not in data:
-            raise serializers.ValidationError('quantity field is required')
-        return data
+    # def validate(self,data):
+    #     print("THIS IS DATA"*10,data)
+    #     if 'meta_measurement' in data:
+    #         meta_measurement = data['meta_measurement']
+    #         data['selling_price'] = meta_measurement[0].get('selling_price')
+    #     if 'id' not in data['products'][0]:
+    #         raise serializers.ValidationError('id field is required')    
+    #     if 'selling_price' not in data['products'][0]:
+    #         raise serializers.ValidationError('selling_price field is required')
+    #     if 'quantity' not in data['products'][0]:
+    #         raise serializers.ValidationError('quantity field is required')
+    #     return data

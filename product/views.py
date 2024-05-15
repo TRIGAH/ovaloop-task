@@ -9,27 +9,8 @@ from rest_framework import status
 
 # Create your views here.
 
-# Approach 1 using Class Based Views
-class CreateOrderViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = CreateOrderSerializer
 
-
-# Approach 2 using Function Based Views
-
-@api_view(['POST'])
-def create_order(request):
-    if request.method == 'POST':
-        serializer = CreateOrderSerializer(data=request.data, many=True)
-        if serializer.is_valid():
-            serializer.save()    
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-products_list = [
+products = [
   {
     "id": "0d001705-fa00-4317-9bb0-f34118da491c",
     "business_name": "Ovaloop Venture",
@@ -58,7 +39,7 @@ products_list = [
     ]
   },
   {
-    "id": "0d001705-fa00-4317-9bb0-f34118da491c",
+    "id": "0d001705-fa00-4317-9bb0-f34117da491c",
     "business_name": "Ovaloop Venture",
     "name": "Coke",
     "sku": "53418457",
@@ -85,7 +66,7 @@ products_list = [
     ]
   },
   {
-    "id": "0d001705-fa00-4317-9bb0-f34118da491c",
+    "id": "0d001705-fa00-4317-9bb0-f24118da491c",
     "business_name": "Ovaloop Venture",
     "name": "Sprite",
     "sku": "53418457",
@@ -112,7 +93,7 @@ products_list = [
     ]
   },
   {
-    "id": "0d001705-fa00-4317-9bb0-f34118da491c",
+    "id": "0d001705-fa00-4317-9bb0-f35118da491c",
     "business_name": "Ovaloop Venture",
     "name": "Star",
     "sku": "53418457",
@@ -139,7 +120,7 @@ products_list = [
     ]
   },
   {
-    "id": "0d001705-fa00-4317-9bb0-f34118da491c",
+    "id": "0d001405-fa00-4317-9bb0-f34118da491c",
     "business_name": "Ovaloop Venture",
     "name": "7up",
     "sku": "53418457",
@@ -166,6 +147,36 @@ products_list = [
     ]
   }
 ]
+
+# Approach 1 using Class Based Views
+class CreateOrderViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = CreateOrderSerializer
+
+
+# Approach 2 using Function Based Views
+
+@api_view(['POST'])
+def create_order(request):
+    if request.method == 'POST':
+        serializer = CreateOrderSerializer(data=request.data)
+        if serializer.is_valid():
+            product_id = str(request.data['products'][0]['id'])
+            for  product in products:
+                if product_id == str(product['id']):
+                    print("THIS IS IT"*20,request.data)
+                    print(product_id)
+             
+            serializer.save()
+      
+            return Response(request.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
 
 
 
