@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from product.serializers import CreateOrderSerializer
-from product.models import Product,MetaMeasurement
+from product.models import Product,MetaMeasurement,Order
 from rest_framework import viewsets
 from rest_framework import status
 
@@ -148,6 +148,31 @@ products = [
   }
 ]
 
+payload = {
+  "products": [
+    {
+      "id": "0d001705-fa00-4317-9bb0-f34118da491c",
+      "selling_price": "4000.00",
+      "quantity": "2",
+      "meta_measurement":         {
+          "name": "Box",
+          "base_quantity": "12",
+          "selling_price": "29500"
+        }
+    },
+    {
+      "id": "0d001405-fa00-4317-9bb0-f34118da491c",
+      "selling_price": "4000.00",
+      "quantity": "2",
+      "meta_measurement":         {
+          "name": "Box",
+          "base_quantity": "12",
+          "selling_price": "29500"
+        }
+    }
+  ]
+}
+
 # Approach 1 using Class Based Views
 class CreateOrderViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
@@ -161,15 +186,8 @@ def create_order(request):
     if request.method == 'POST':
         serializer = CreateOrderSerializer(data=request.data)
         if serializer.is_valid():
-            product_id = str(request.data['products'][0]['id'])
-            for  product in products:
-                if product_id == str(product['id']):
-                    print("THIS IS IT"*20,request.data)
-                    print(product_id)
-             
             serializer.save()
-      
-            return Response(request.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

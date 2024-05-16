@@ -21,6 +21,7 @@ class Product(models.Model):
     selling_price = models.FloatField(default=0.0)
     quantity = models.IntegerField(default=0)
     meta_measurement = models.ManyToManyField(MetaMeasurement,blank=True,null=True)
+    total_quantity = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -29,4 +30,17 @@ class Product(models.Model):
 
     def __str__(self):
          return f"{self.name}"
+    
+class Order(models.Model):
+        products = models.CharField(max_length=20,blank=True,null=True)
+        created_at = models.DateTimeField(auto_now_add=True)
+        updated_at = models.DateTimeField(auto_now=True)
+
+        class Meta:
+            ordering = ('-created_at',)
+
+        def __str__(self):
+             return f"{self.products}"
+
+
     

@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import Product,MetaMeasurement
+from .models import Product,MetaMeasurement,Order
 # Register your models here.
-admin.site.register(Product)
-admin.site.register(MetaMeasurement)
+admin.site.register(Order)
